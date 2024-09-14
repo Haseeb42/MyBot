@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap Tap Coin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            text-align: center;
+        }
+        #coin-button {
+            padding: 20px;
+            font-size: 24px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        #coin-count {
+            margin-top: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <button id="coin-button">Tap me</button>
+        <div id="coin-count">Coins: 0</div>
+    </div>
+
+    <script>
+        const coinButton = document.getElementById('coin-button');
+        const coinCount = document.getElementById('coin-count');
+
+        // Fetch initial coin count
+        async function fetchCoins() {
+            const response = await fetch('/coins');
+            const data = await response.json();
+            coinCount.innerText = `Coins: ${data.coins}`;
+        }
+
+        // Update coin count on tap
+        coinButton.addEventListener('click', async () => {
+            const response = await fetch('/tap', { method: 'POST' });
+            const data = await response.json();
+            coinCount.innerText = `Coins: ${data.coins}`;
+        });
+
+        // Load initial coin count when page loads
+        window.onload = fetchCoins;
+    </script>
+</body>
+</html>
